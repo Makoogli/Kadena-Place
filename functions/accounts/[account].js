@@ -12,7 +12,7 @@ class ElementHandler {
   }
 }
 
-export function handleRequest(request) {
+export async function handleRequest(request) {
 	let res = await fetch(request)
 	return new HTMLRewriter().on('div', new ElementHandler()).transform(res);
 }
