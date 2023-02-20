@@ -1,4 +1,5 @@
-export const onRequest = ({params}) => {
-	const {accountName} = params;
-	return new Response(`Your account is ${accountName}`);
-}
+export default {
+	async fetch(request) {
+		return new Response(`Your account is ${request.params.accouns}`);
+	},
+};
