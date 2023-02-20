@@ -1,3 +1,18 @@
-export function onRequest(request) {
-	return new Response("<!DOCTYPE html><html><body><div>Your account name is "+request.params.account+"</div></body></html>",{headers:{'content-type':'text/html;charset=UTF-8'}});
+export async function onRequest(request) {
+	class ElementHandler {
+	  element(element) {
+	    // An incoming element, such as `div`
+	    element.setInnerContent("account is "+request.params.account);
+	  }
+
+	  comments(comment) {
+	    // An incoming comment
+	  }
+
+	  text(text) {
+	    // An incoming piece of text
+	  }
+	}
+	let res = await fetch(request);
+	return new HTMLRewriter().on('div', new ElementHandler()).transform(res);
 }
