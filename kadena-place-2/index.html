@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name='viewport' content='user-scalable=no'>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/pact-lang-api@4.1.2/pact-lang-api-global.min.js"></script>
+		<script src="./hybrid-crypto.min.js"></script>
+		<script src="./sha256.min.js"></script>
+		<script src="./simple-XWallet.js"></script>
+		<script src="./kadena-e2ee-messaging.js"></script>
+		<script src="./kadena-place.js"></script>
+		<script src="./main.js"></script>
+		<script src="./init.js"></script>
+		<link rel="stylesheet" href="./main.css">
+	</head>
+	<body class='nontouch' style="margin: 0px">
+		<div id='page'>
+			<div id='home' class='layout'>
+				<div class='header'>
+					<div class='upper_header'>
+						<div class='links'>
+							<button type='button' onclick='popupMenu()'>≡</button>
+						</div>
+						<div class='title'>Kadena Place</div>
+					</div>
+					<div class='lower_header'>
+						<div class='connect'>
+							<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
+						</div>
+					</div>
+				</div>
+				<div class='center'>
+					<div class='middle'>
+						<div class='control'>
+							<button type='button' onclick='canvas.stopDrawing()'>view</button>
+							<button type='button' onclick='canvas.clear()'>clear</button>
+							<button type='button' onclick='canvas.undo()'>undo</button>
+							<button type='button' onclick='canvas.redo()'>redo</button>
+						</div>
+						<div class='canvas'></div>
+					</div>
+				</div>
+				<div class='footer'>
+					<div class='upper_footer'>
+						<button class='eraser_wrapper' type='button' onclick='canvas.startErasing(this)'>
+							<div class='eraser'>
+								<div></div>
+							</div>
+						</button>
+						<div class='palette_wrapper'>
+							<div class='palette' onmousedown='mouseDownPalette(event)' ontouchstart='mouseDownPalette(event)'>
+								<button class='c1' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(255,0,0);'>#ff0000</div>
+								</button>
+								<button class='c2' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(255,165,0);'>#ffa500</div>
+								</button>
+								<button class='c3' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(255,255,0);'>#ffff00</div>
+								</button>
+								<button class='c4' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(0,255,0);'>#00ff00</div>
+								</button>
+								<button class='c5' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(0,255,255);'>#00ffff</div>
+								</button>
+								<button class='c6' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(0,0,255);'>#0000ff</div>
+								</button>
+								<button class='c7' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(160,32,240);'>#a020f0</div>
+								</button>
+								<button class='c8' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(255,192,203);'>#ffc0cb</div>
+								</button>
+								<button class='c9' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(255,255,255);'>#ffffff</div>
+								</button>
+								<button class='c10' type='button' onclick='canvas.changeColor(this)'>
+									<div class='color' style='background-color:rgb(0,0,0);'>#000000</div>
+								</button>
+							</div>
+						</div>
+						<button class='change_color_wrapper' type='button' onclick='let hidden_color = document.getElementById("hidden_color");hidden_color.value = canvas.color.value;hidden_color.click();' disabled>
+							<div class='change_color'>
+								<div class='rainbow'></div>
+							</div>
+							<input id='hidden_color' type='color' oninput='thinChangeColor(this)' value='#ff0000'>
+						</button>
+					</div>
+					<div class='lower_footer'>
+						<button class='pixel_data' type='button' onclick='popupPixelData()'>Pixel Data</button>
+						<button class='commit' type='button' onclick='popupCommit()'>Commit</button>
+						<button class='settings' type='button' onclick='popupSettings()'>Settings</button>
+					</div>
+				</div>
+			</div>
+			<div id='my-account'>
+				<div class='header'>
+					<div class='upper_header'>
+						<div class='links'>
+							<button type='button' onclick='popupMenu()'>≡</button>
+						</div>
+						<div class='title'>Kadena Place</div>
+					</div>
+					<div class='lower_header'>
+						<div class='connect'>
+							<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
+						</div>
+					</div>
+				</div>
+				<div class='center'>
+					<table>
+						<tr>
+							<th>Account Password</td>
+							<td>
+								<input id='my_account_password' type='password' value='' disabled>
+							</td>
+							<td>
+								<button onclick='toggleShowHideAccountPassword(this)'>Show</button>
+								<button onclick='popupChangePassword()'>Change</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Minimum Tip Accepted</td>
+							<td>
+								<input id='my_account_min_tip' type='text' value='0 KDA' disabled>
+							</td>
+							<td>
+								<button onclick='popupChangeMinTip()'>Change</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Available Rewards</td>
+							<td>
+								<input id='my_account_rewards' type='text' value='0 KDA' disabled>
+							</td>
+							<td>
+								<button onclick='claimRewards()'>Claim</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class='footer'></div>
+			</div>
+			<div id='stats'>
+				<div class='header'>
+					<div class='upper_header'>
+						<div class='links'>
+							<button type='button' onclick='popupMenu()'>≡</button>
+						</div>
+						<div class='title'>Kadena Place</div>
+					</div>
+					<div class='lower_header'>
+						<div class='connect'>
+							<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
+						</div>
+					</div>
+				</div>
+				<div class='center'></div>
+				<div class='footer'></div>
+			</div>
+		</div>
+		<div id='links_popup' class='popup' onclick='closeMenu()'>
+			<div class='window'>
+				<a id='link_home' onclick='switchPage("home");'>Home</a>
+				<a id='link_my-account' onclick='switchPage("my-account");'>My Account</a>
+				<a id='link_stats' onclick='switchPage("stats");'>Stats</a>
+				<a id='link_xwallet' href='https://xwallet.kaddex.com/#download'>XWallet</a>
+				<a id='link_kadena' href='https://kadena.io/'>Kadena</a>
+			</div>
+		</div>
+		<div id='pixel_data_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Pixel Data</div>
+				<button class='close' type='button' onclick='closePixelData()'>Close</button>
+				<div class='body'>
+					<table>
+						<tr>
+							<th>Pixel ID</th>
+							<td>vasd</td> <!--LINK-->
+						</tr>
+						<tr>
+							<th>Artist</th>
+							<td>savasd</td> <!--LINK-->
+						</tr>
+						<tr>
+							<th>Color</th>
+							<td>asdvasvddf</td>
+						</tr>
+						<tr>
+							<th>Price</th>
+							<td>asdva</td>
+						</tr>
+						<tr>
+							<th>Rewards Available</th>
+							<td>asdv</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id='commit_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Commit Summary</div>
+				<button class='close' type='button' onclick='closeCommit()'>Close</button>
+				<div class='body'>
+					<div class='upper_body'>
+						<table>
+							<tr>
+								<th># of Pixels</th>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Price</th>
+								<td></td>
+							</tr>
+						</table>
+						<div class='edits'></div>
+					</div>
+					<button class='commit'>Commit</button>
+				</div>
+			</div>
+		</div>
+		<div id='settings_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Settings</div>
+				<button class='close' type='button' onclick='closeSettings()'>Close</button>
+				<div class='body'>
+					<table>
+						<tr>
+							<th>Show Place</th>
+							<td>
+								<button type='button' onclick='canvas.togglePlace(this)'>
+									<input type='checkbox' checked>
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Show Edits</th>
+							<td>
+								<button type='button' onclick='canvas.toggleEdits(this)'>
+									<input type='checkbox' checked>
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Show Grid</th>
+							<td>
+								<button type='button' onclick='canvas.toggleGrid(this)'>
+									<input type='checkbox' checked>
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Grid Line Width</th>
+							<td>
+								<button type='button'>
+									<input type='range' min='0.1' max='1.0' step='0.1' value='0.4' oninput='canvas.updateGridLineWidth(this)'>
+								</button>
+							</td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<th>
+								<button type='button' onclick='canvas.resetZoom()'>Reset Zoom</button>
+							</th>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id='create_account_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Create Password</div>
+				<button class='close' type='button' onclick='closeCreateAccount()'>Close</button>
+				<div class='body'>
+					Password: <input id='password_1' type='password'>
+					Retype Password:<input id='password_2' type='password'>
+					<button type='button' onclick='createAccount()'>Create</button>
+				</div>
+			</div>
+		</div>
+		<div id='sign_in_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Account Password</div>
+				<button class='close' type='button' onclick='closeSignIn()'>Close</button>
+				<div class='body'>
+					Password: <input id='password_3' type='password'>
+					<button type='button' onclick='signInAccount()'>Sign In</button>
+				</div>
+			</div>
+		</div>
+		<div id='change_password_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Change Password</div>
+				<button class='close' type='button' onclick='closeChangePassword()'>Close</button>
+				<div class='body'>
+					Old Password: <input id='password_4' type='password'>
+					New Password: <input id='password_5' type='password'>
+					New Password: <input id='password_6' type='password'>
+					<button type='button' onclick='changePassword()'>Confirm</button>
+				</div>
+			</div>
+		</div>
+		<div id='change_min_tip_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Change Minimum Tip</div>
+				<button class='close' type='button' onclick='closeChangeMinTip()'>Close</button>
+				<div class='body'>
+					Minimum Tip: <input id='min_tip'>
+					<button type='button' onclick='changeMinTip()'>Confirm</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
