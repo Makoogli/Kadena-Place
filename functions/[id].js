@@ -1,5 +1,3 @@
-export default {
-	async fetch(request){
-		return new Response(`Returning ${JSON.stringify(request)}`);
-	}
+export function onRequest(context) {
+	return new Response(JSON.stringify(context));
 }
