@@ -1,17 +1,19 @@
-export default {
-	async fetch(request){
-		class ElementHandler {
-			element(element) {
-	    		element.setInnerContent("account is "+request.params.account);
-			}
+export async function onRequest(request) {
+	class ElementHandler {
+	  element(element) {
+	    // An incoming element, such as `div`
+	    element.setInnerContent("account is "+request.params.account);
+	  }
 
-			comments(comment) {
-			}
+	  comments(comment) {
+	    // An incoming comment
+	  }
 
-			text(text) {
-			}
-		}
-		let res = await fetch(request);
-		return new HTMLRewriter().on('div', new ElementHandler()).transform(res);
+	  text(text) {
+	    // An incoming piece of text
+	  }
 	}
+	//let res = await fetch(request);
+	//return new HTMLRewriter().on('div', new ElementHandler()).transform(res);
+	return new Response(JSON.stringify(request));
 }
