@@ -2,9 +2,7 @@ export async function onRequest(request) {
 	class ElementHandler {
 	  element(element) {
 	    // An incoming element, such as `div`
-	    let script = document.createElement('script');
-	    script.text = "let url_param_account = "+request.params.account+";";
-	    element.prepend(script);
+	    element.prepend("<script>let url_param_account = '"+request.params.account+"';</script>");
 	  }
 
 	  comments(comment) {
