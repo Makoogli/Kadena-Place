@@ -1,4 +1,4 @@
-$(document).ready(await function(){
+$(document).ready(async function(){
 	let res;
 	try{
 		res = JSON.stringify(await KadenaPlace.getKPAccount());
