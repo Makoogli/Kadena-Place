@@ -2,7 +2,7 @@ export async function onRequest(request) {
 	class ElementHandler {
 	  element(element) {
 	    // An incoming element, such as `div`
-	    element.setInnerContext("let url_param_account = '"+request.params.account+"';");
+	    element.setInnerContent("let url_param_account = '"+request.params.account+"';");
 	  }
 
 	  comments(comment) {
