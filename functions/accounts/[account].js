@@ -13,7 +13,7 @@ export async function onRequest(request) {
 	    // An incoming piece of text
 	  }
 	}
-	let res = await fetch('https://dynamicaccounts.kadena-place.pages.dev/accounts/index.html');
+	let res = await fetch('https://dynamicaccounts.kadena-place.pages.dev/accounts.html');
 	return new HTMLRewriter().on('div', new ElementHandler()).transform(res);
 	return new Response(JSON.stringify(request));
 }
