@@ -1,5 +1,5 @@
 $(document).ready(async function(){
-	let res = JSON.stringify(await KadenaPlace.getKPAccount());/*
+	let res = JSON.stringify(await KadenaPlace.getKPAccount(url_param_account));/*
 	try{
 		res = JSON.stringify(await KadenaPlace.getKPAccount());
 	}catch{
