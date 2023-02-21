@@ -13,7 +13,7 @@ export async function onRequest(request) {
 	    // An incoming piece of text
 	  }
 	}
-	let res = await fetch('/accounts/index.html');
+	let res = await fetch('/accounts.html');
 	return new HTMLRewriter().on('div', new ElementHandler()).transform(res);
 	return new Response(JSON.stringify(request));
 }
