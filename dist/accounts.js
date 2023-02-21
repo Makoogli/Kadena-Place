@@ -5,5 +5,6 @@ $(document).ready(async function(){
 	}catch{
 		res = "Does not exist";
 	}*/
+	console.log(res);
 	$("body").text(res);
 });
