@@ -157,8 +157,7 @@ let KadenaPlace = {
 						}
 					}
 				});
-				//let key = await KadenaPlace.sendSigned(data.signedCmd);
-				let key = "tcna2l7Vf1XHrVOP4nQLp2BnCxNqOdUxGzgQ1CJvBU4";
+				let key = await KadenaPlace.sendSigned(data.signedCmd);
 				KadenaE2EEMessaging.e2ee_messaging.listen(key,async function(data){
 					sessionStorage.setItem('kadena-e2ee-messaging-password',password);
 					successFun(data);
