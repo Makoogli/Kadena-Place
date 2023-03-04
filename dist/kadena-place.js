@@ -307,5 +307,9 @@ let KadenaPlace = {
 	placePrice: async function(){
 		let data = await KadenaE2EEMessaging.e2ee_messaging.local('(free.kadena-place.get-place-price)');
 		return data;
+	},
+	placeHistory: async function(){
+		let data = await KadenaE2EEMessaging.e2ee_messaging.local('(free.kadena-place.get-place-history)');
+		return data;
 	}
 }
