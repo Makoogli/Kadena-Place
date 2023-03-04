@@ -19,7 +19,7 @@ let XWallet = function(apiHost,chainId,meta=undefined){
 	this.chainId = function(_chainId){return new XWallet(apiHost,_chainId,meta)};
 	this.meta = function(_meta){return new XWallet(apiHost,chainId,_meta)};
 	this.local = async function(pactCode,envData=undefined,caps=undefined){
-		let data = await Pact.fetch.local({meta:Pact.lang.mkMeta("", "5", 1e-7, 1000000000, 0, 600),envData:envData,caps:caps,pactCode:pactCode},apiHost);
+		let data = await Pact.fetch.local({meta:Pact.lang.mkMeta("", "5", 1e-7, 1000000, 0, 600),envData:envData,caps:caps,pactCode:pactCode},apiHost);
 		if(data.result.status == "success"){
 			return data.result.data;
 		}else{
