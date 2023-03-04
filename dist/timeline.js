@@ -2,7 +2,7 @@ function timepToMilliseconds(timep){
 	return (new Date(timep)).getTime();
 }
 
-function makeTimeline(){
+async function makeTimeline(){
 	let placeHistory = await KadenaPlace.placeHistory();
 	let points = [];
 	for(let i=0;i<placeHistory.length;i++){
@@ -20,6 +20,6 @@ function makeTimeline(){
 }
 
 $(document).ready(async function(){
-	let timeline = makeTimeline();
+	let timeline = await makeTimeline();
 	$("body").text(JSON.stringify(timeline));
 });
