@@ -2,7 +2,24 @@ function timepToMilliseconds(timep){
 	return (new Date(timep)).getTime();
 }
 
-$(document).ready(async function(){
+function makeTimeline(){
 	let placeHistory = await KadenaPlace.placeHistory();
-	$("body").text((timepToMilliseconds((await KadenaPlace.getKPAccount("k:e61108b15a8c5b45d7593ebdd1e66c1bd0d9f40cb4190d2e68c922355c0bb932")).joined.timep)).toString());
+	let points = [];
+	for(let i=0;i<placeHistory.length;i++){
+		let pixelHistory = placeHistory[i].history;
+		for(let j=0;j<pixelHistory.length;j++){
+			let pixelPoint = pixelHistory[i];
+			pixelPoint.id = placeHistory[i].id;
+			pixelPoint.time = timepToMilliseconds(pixelPoint.time.timep);
+			points.push(pixelPoint);
+		}
+	}
+	return points.sort(function(a,b){
+		return a.time - b.time;
+	});
+}
+
+$(document).ready(async function(){
+	let timeline = makeTimeline();
+	$("body").text(JSON.stringify(timeline));
 });
