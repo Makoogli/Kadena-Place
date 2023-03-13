@@ -4,11 +4,11 @@ let KadenaPlace = {
 		let pixels = data.result.data;
 		let pixelArray = Array(4000000);
 		for(let i=0;i<pixels.length;i++){
-			let hexColor = pixels[i][1];
+			let hexColor = pixels[i].color;
 			let r = parseInt(hexColor.substring(1,3),16);
 			let g = parseInt(hexColor.substring(3,5),16);
 			let b = parseInt(hexColor.substring(5,7),16);
-			let redPos = 4*pixels[i][0];
+			let redPos = 4*pixels[i].id;
 			pixelArray[redPos+0] = r;
 			pixelArray[redPos+1] = g;
 			pixelArray[redPos+2] = b;
@@ -157,8 +157,7 @@ let KadenaPlace = {
 						}
 					}
 				});
-				//let key = await KadenaPlace.sendSigned(data.signedCmd);
-				let key = "tcna2l7Vf1XHrVOP4nQLp2BnCxNqOdUxGzgQ1CJvBU4";
+				let key = await KadenaPlace.sendSigned(data.signedCmd);
 				KadenaE2EEMessaging.e2ee_messaging.listen(key,async function(data){
 					sessionStorage.setItem('kadena-e2ee-messaging-password',password);
 					successFun(data);
@@ -306,6 +305,10 @@ let KadenaPlace = {
 	},
 	placePrice: async function(){
 		let data = await KadenaE2EEMessaging.e2ee_messaging.local('(free.kadena-place.get-place-price)');
+		return data;
+	},
+	placeHistory: async function(){
+		let data = await KadenaE2EEMessaging.e2ee_messaging.local('(free.kadena-place.get-place-history)');
 		return data;
 	}
 }
