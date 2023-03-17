@@ -13,6 +13,6 @@ export async function onRequest(request) {
 	    // An incoming piece of text
 	  }
 	}
-	let res = await fetch('https://dynamicaccounts.kadena-place-dynamic.pages.dev/pixels.html');
+	let res = await fetch('https://kadena-place-dynamic.pages.dev/pixels.html');
 	return new HTMLRewriter().on('script#set_url_param_pixel_variable', new ElementHandler()).transform(res);
 }

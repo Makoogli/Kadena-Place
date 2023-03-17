@@ -13,6 +13,6 @@ export async function onRequest(request) {
 	    // An incoming piece of text
 	  }
 	}
-	let res = await fetch('https://dynamicaccounts.kadena-place-dynamic.pages.dev/timeline.html');
+	let res = await fetch('https://kadena-place-dynamic.pages.dev/timeline.html');
 	return new HTMLRewriter().on('script#set_url_param_time_variable', new ElementHandler()).transform(res);
 }
