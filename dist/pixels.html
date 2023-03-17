@@ -14,7 +14,38 @@
 		<link rel="stylesheet" type="text/css" href="../main.css">
 		<link rel="stylesheet" type="text/css" href="../pixels.css">
 	</head>
-	<body>
-		
+	<body class='nontouch'>
+		<div id='page'>
+			<div id='home' class='layout'>
+				<div class='header'>
+					<div class='upper_header'>
+						<div class='links'>
+							<button type='button' onclick='popupMenu()'>≡</button>
+						</div>
+						<div class='title'>Kadena Place</div>
+					</div>
+					<div class='lower_header'>
+						<div class='connect'>
+							<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
+						</div>
+					</div>
+				</div>
+				<div class='center'>
+					<canvas id='canvas'></canvas>
+				</div>
+				<div class='footer'>
+					<input id='timeline' type='range' value='100' min='1' max='100'>
+				</div>
+			</div>
+		</div>
+		<div id='links_popup' class='popup' onclick='closeMenu()'>
+			<div class='window'>
+				<a id='link_home' onclick='switchPage("home");'>Home</a>
+				<a id='link_my-account' onclick='switchPage("my-account");'>My Account</a>
+				<a id='link_stats' onclick='switchPage("stats");'>Stats</a>
+				<a id='link_xwallet' href='https://xwallet.kaddex.com/#download'>XWallet</a>
+				<a id='link_kadena' href='https://kadena.io/'>Kadena</a>
+			</div>
+		</div>
 	</body>
 </html>
