@@ -12,6 +12,28 @@
 		<link rel="stylesheet" type="text/css" href="../timeline.css">
 	</head>
 	<body>
-		<canvas id="canvas"></canvas>
+		<div id='page'>
+			<div id='home' class='layout'>
+				<div class='header'>
+					<div class='upper_header'>
+						<div class='links'>
+							<button type='button' onclick='popupMenu()'>≡</button>
+						</div>
+						<div class='title'>Kadena Place</div>
+					</div>
+					<div class='lower_header'>
+						<div class='connect'>
+							<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
+						</div>
+					</div>
+				</div>
+				<div class='center'>
+					<canvas id='canvas'></canvas>
+				</div>
+				<div class='footer'>
+					<input id='timeline' type='range' value='100' min='1' max='100'>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
