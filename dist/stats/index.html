@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pact-lang-api@4.1.2/pact-lang-api-global.min.js"></script>
+		<script type="text/javascript" src="../simple-XWallet.js"></script>
+		<script type="text/javascript" src="../kadena-e2ee-messaging.js"></script>
+		<script type="text/javascript" src="../kadena-place.js"></script>
+		<script type="text/javascript" src="../main.js"></script>
+		<link rel="stylesheet" type="text/css" href="../main.css">
+	</head>
+	<body>
+		<div id='page'>
+			<div id='home' class='layout'>
+				<div class='header'>
+					<div class='upper_header'>
+						<div class='links'>
+							<button type='button' onclick='popupMenu()'>≡</button>
+						</div>
+						<div class='title'>Kadena Place</div>
+					</div>
+					<div class='lower_header'>
+						<div class='connect'>
+							<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
+						</div>
+					</div>
+				</div>
+				<div class='center'>
+					
+				</div>
+				<div class='footer'>
+					
+				</div>
+			</div>
+		</div>
+		<div id='links_popup' class='popup' onclick='closeMenu()'>
+			<div class='window'>
+				<a id='link_home' href='https://www.kadena-place.com/'>Home</a>
+				<a id='link_my-account' href='https://www.kadena-place.com/my-account'>My Account</a>
+				<a id='link_stats' href='https://www.kadena-place.com/stats'>Stats</a>
+				<a id='link_pixels' href='https://www.kadena-place.com/pixels'>Pixels Explorer</a>
+				<a id='link_accounts' href='https://www.kadena-place.com/accounts'>Accounts Explorer</a>
+				<a id='link_timeline' href='https://www.kadena-place.com/timeline'>Timeline Explorer</a>
+				<a id='link_xwallet' href='https://xwallet.kaddex.com/#download'>XWallet</a>
+				<a id='link_kadena' href='https://kadena.io/'>Kadena</a>
+			</div>
+		</div>
+	</body>
+</html>

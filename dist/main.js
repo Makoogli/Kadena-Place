@@ -441,25 +441,6 @@ async function connectFun(canPopup){
 	}
 }
 
-async function switchPage(newPage){
-	document.getElementById(page).style.display = 'none';
-	document.getElementById(newPage).style.display = 'flex';
-	page = newPage;
-	let account = await KadenaPlace.getAccount();
-	if(account.wallet == undefined){
-		let connectButton = $('#page div.connect button');
-		connectButton.map(function(i){$(connectButton[i]).text('Connect');$(connectButton[i]).attr('onclick',"connectFun(true)")});
-		connectFun(false);
-	}else{
-		if(newPage == 'my-account'){
-			let kpAccount = await KadenaPlace.getKPAccount(account.wallet.account);
-			document.getElementById('my_account_password').value = sessionStorage.getItem('kadena-e2ee-messaging-password');
-			document.getElementById('my_account_min_tip').value = JSON.stringify(kpAccount["min-tip"])+" KDA";
-			document.getElementById('my_account_rewards').value = JSON.stringify(await KadenaPlace.accountAvailableRewards(account.wallet.account))+" KDA";
-		}
-	}
-}
-
 function toggleShowHideAccountPassword(btn){
 	if(btn.innerText == 'Show'){
 		btn.innerText = 'Hide';
