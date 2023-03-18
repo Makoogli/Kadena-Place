@@ -15,86 +15,85 @@
 	</head>
 	<body class='nontouch'>
 		<div id='page'>
-			<div id='home' class='layout'>
-				<div class='header'>
-					<div class='upper_header'>
-						<div class='links'>
-							<button type='button' onclick='popupMenu()'>≡</button>
-						</div>
-						<div class='title'>Kadena Place</div>
+			<div class='header'>
+				<div class='upper_header'>
+					<div class='links'>
+						<button type='button' onclick='popupMenu()'>≡</button>
 					</div>
-					<div class='lower_header'>
-						<div class='connect'>
-							<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
-						</div>
-					</div>
+					<div class='title'>Kadena Place</div>
 				</div>
-				<div class='center'>
-					<div class='middle'>
-						<div class='control'>
-							<button type='button' onclick='canvas.stopDrawing()'>view</button>
-							<button type='button' onclick='canvas.clear()'>clear</button>
-							<button type='button' onclick='canvas.undo()'>undo</button>
-							<button type='button' onclick='canvas.redo()'>redo</button>
-						</div>
-						<div class='canvas'></div>
-					</div>
-				</div>
-				<div class='footer'>
-					<div class='upper_footer'>
-						<button class='eraser_wrapper' type='button' onclick='canvas.startErasing(this)'>
-							<div class='eraser'>
-								<div></div>
-							</div>
-						</button>
-						<div class='palette_wrapper'>
-							<div class='palette' onmousedown='mouseDownPalette(event)' ontouchstart='mouseDownPalette(event)'>
-								<button class='c1' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(255,0,0);'>#ff0000</div>
-								</button>
-								<button class='c2' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(255,165,0);'>#ffa500</div>
-								</button>
-								<button class='c3' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(255,255,0);'>#ffff00</div>
-								</button>
-								<button class='c4' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(0,255,0);'>#00ff00</div>
-								</button>
-								<button class='c5' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(0,255,255);'>#00ffff</div>
-								</button>
-								<button class='c6' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(0,0,255);'>#0000ff</div>
-								</button>
-								<button class='c7' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(160,32,240);'>#a020f0</div>
-								</button>
-								<button class='c8' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(255,192,203);'>#ffc0cb</div>
-								</button>
-								<button class='c9' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(255,255,255);'>#ffffff</div>
-								</button>
-								<button class='c10' type='button' onclick='canvas.changeColor(this)'>
-									<div class='color' style='background-color:rgb(0,0,0);'>#000000</div>
-								</button>
-							</div>
-						</div>
-						<button class='change_color_wrapper' type='button' onclick='let hidden_color = document.getElementById("hidden_color");hidden_color.value = canvas.color.value;hidden_color.click();' disabled>
-							<div class='change_color'>
-								<div class='rainbow'></div>
-							</div>
-							<input id='hidden_color' type='color' oninput='thinChangeColor(this)' value='#ff0000'>
-						</button>
-					</div>
-					<div class='lower_footer'>
-						<button class='pixel_data' type='button' onclick='popupPixelData()'>Pixel Data</button>
-						<button class='commit' type='button' onclick='popupCommit()'>Commit</button>
-						<button class='settings' type='button' onclick='popupSettings()'>Settings</button>
+				<div class='lower_header'>
+					<div class='connect'>
+						<button id='connect_button' type='button' onclick='connectFun(true)'>Connect</button>
 					</div>
 				</div>
 			</div>
+			<div class='center'>
+				<div class='middle'>
+					<div class='control'>
+						<button type='button' onclick='canvas.stopDrawing()'>view</button>
+						<button type='button' onclick='canvas.clear()'>clear</button>
+						<button type='button' onclick='canvas.undo()'>undo</button>
+						<button type='button' onclick='canvas.redo()'>redo</button>
+					</div>
+					<div class='canvas'></div>
+				</div>
+			</div>
+			<div class='footer'>
+				<div class='upper_footer'>
+					<button class='eraser_wrapper' type='button' onclick='canvas.startErasing(this)'>
+						<div class='eraser'>
+							<div></div>
+						</div>
+					</button>
+					<div class='palette_wrapper'>
+						<div class='palette' onmousedown='mouseDownPalette(event)' ontouchstart='mouseDownPalette(event)'>
+							<button class='c1' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(255,0,0);'>#ff0000</div>
+							</button>
+							<button class='c2' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(255,165,0);'>#ffa500</div>
+							</button>
+							<button class='c3' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(255,255,0);'>#ffff00</div>
+							</button>
+							<button class='c4' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(0,255,0);'>#00ff00</div>
+							</button>
+							<button class='c5' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(0,255,255);'>#00ffff</div>
+							</button>
+							<button class='c6' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(0,0,255);'>#0000ff</div>
+							</button>
+							<button class='c7' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(160,32,240);'>#a020f0</div>
+							</button>
+							<button class='c8' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(255,192,203);'>#ffc0cb</div>
+							</button>
+							<button class='c9' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(255,255,255);'>#ffffff</div>
+							</button>
+							<button class='c10' type='button' onclick='canvas.changeColor(this)'>
+								<div class='color' style='background-color:rgb(0,0,0);'>#000000</div>
+							</button>
+						</div>
+					</div>
+					<button class='change_color_wrapper' type='button' onclick='let hidden_color = document.getElementById("hidden_color");hidden_color.value = canvas.color.value;hidden_color.click();' disabled>
+						<div class='change_color'>
+							<div class='rainbow'></div>
+						</div>
+						<input id='hidden_color' type='color' oninput='thinChangeColor(this)' value='#ff0000'>
+					</button>
+				</div>
+				<div class='lower_footer'>
+					<button class='pixel_data' type='button' onclick='popupPixelData()'>Pixel Data</button>
+					<button class='commit' type='button' onclick='popupCommit()'>Commit</button>
+					<button class='settings' type='button' onclick='popupSettings()'>Settings</button>
+				</div>
+			</div>
+		</div>
 		<div id='links_popup' class='popup' onclick='closeMenu()'>
 			<div class='window'>
 				<a id='link_home' href='https://www.kadena-place.com/'>Home</a>
