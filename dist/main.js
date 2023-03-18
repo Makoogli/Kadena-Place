@@ -5,7 +5,7 @@ let account;
 let page = "home";
 
 function getElement(_class){
-	return document.getElementById('home').getElementsByClassName(_class).item(0);
+	return document.getElementById('page').getElementsByClassName(_class).item(0);
 }
 
 function clientToCtx(x,y){
