@@ -75,5 +75,26 @@
 				<a id='link_kadena' href='https://kadena.io/'>Kadena</a>
 			</div>
 		</div>
+		<div id='create_account_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Create Password</div>
+				<button class='close' type='button' onclick='closeCreateAccount()'>Close</button>
+				<div class='body'>
+					Password: <input id='password_1' type='password'>
+					Retype Password:<input id='password_2' type='password'>
+					<button type='button' onclick='createAccount()'>Create</button>
+				</div>
+			</div>
+		</div>
+		<div id='sign_in_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>Account Password</div>
+				<button class='close' type='button' onclick='closeSignIn()'>Close</button>
+				<div class='body'>
+					Password: <input id='password_3' type='password'>
+					<button type='button' onclick='signInAccount()'>Sign In</button>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
