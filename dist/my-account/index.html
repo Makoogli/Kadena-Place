@@ -26,7 +26,36 @@
 					</div>
 				</div>
 				<div class='center'>
-					
+					<table>
+						<tr>
+							<th>Account Password</td>
+							<td>
+								<input id='my_account_password' type='password' value='' disabled>
+							</td>
+							<td>
+								<button onclick='toggleShowHideAccountPassword(this)'>Show</button>
+								<button onclick='popupChangePassword()'>Change</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Minimum Tip Accepted</td>
+							<td>
+								<input id='my_account_min_tip' type='text' value='0 KDA' disabled>
+							</td>
+							<td>
+								<button onclick='popupChangeMinTip()'>Change</button>
+							</td>
+						</tr>
+						<tr>
+							<th>Available Rewards</td>
+							<td>
+								<input id='my_account_rewards' type='text' value='0 KDA' disabled>
+							</td>
+							<td>
+								<button onclick='claimRewards()'>Claim</button>
+							</td>
+						</tr>
+					</table>
 				</div>
 				<div class='footer'>
 					
