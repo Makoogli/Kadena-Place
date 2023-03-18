@@ -60,5 +60,6 @@ function makePoint(time){
 }
 
 $(document).ready(async function(){
+	connectFun(false);
 	let timeline = await makeTimeline();
 });

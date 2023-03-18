@@ -1,4 +1,5 @@
 $(document).ready(async function(){
+	connectFun(false);
 	try{
 		let res = JSON.stringify(await KadenaPlace.getKPAccount(url_param_account));
 		if(res == undefined){
