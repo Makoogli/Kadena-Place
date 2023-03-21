@@ -71,11 +71,13 @@ function intToHexColor(intArr){
 }
 
 
-function canvasViewingMouseDownHandler(){
+function canvasViewingMouseDownHandler(event){
 	if(event.targetTouches == undefined){
 		canvas.jCanvas.off('mousedown',canvasViewingMouseDownHandler);
 		$(document).on('mousemove',canvasViewingMouseMoveHandler);
 		$(document).on('mouseup',canvasViewingMouseUpHandler);
+		let ctxCoords = clientToCtx(event.clientX,event.clientY);
+		canvas.updateSelected(ctxCoords.x,ctxCoords.y);
 	}
 }
 
@@ -260,6 +262,22 @@ function thinChangeColor(source){
 	canvas.changeColor(canvas.colorParent);
 }
 
+async function updateSelectedData(){
+	let pixel;
+	let placePrice = await KadenaPlace.placePrice();
+	try{
+		pixel = (await KadenaPlace.getPixelsData([JSON.stringify(canvas.selected.y*placeWidth+canvas.selected.x)]))[0];
+	}catch{
+		pixel = {owner:'N/A',color:'N/A','price-hundredths-str':'1','last-claim-place-price':placePrice};
+	}
+	let price = pixel['price-hundredths-str'].padStart(3,'0');
+	document.getElementById('pixel_data_id').innerText = JSON.stringify(canvas.selected.y*placeWidth+canvas.selected.x);
+	document.getElementById('pixel_data_account').innerText = pixel.owner;
+	document.getElementById('pixel_data_color').innerText = pixel.color;
+	document.getElementById('pixel_data_price').innerText = price.substr(0,price.length-2)+'.'+price.substr(price.length-2,2);
+	document.getElementById('pixel_data_rewards').innerText = (0.00000074*(placePrice-pixel['last-claim-place-price'])).toFixed(8);
+}
+
 function popupMenu(){
 	document.getElementById('links_popup').style.display = 'flex';
 }
@@ -270,6 +288,7 @@ function closeMenu(){
 
 function popupPixelData(){
 	document.getElementById('pixel_data_popup').style.display = 'flex';
+	updateSelectedData();
 }
 
 function closePixelData(){

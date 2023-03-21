@@ -45,6 +45,7 @@ $(document).ready(function(){
 			canvas.drawing = true;
 			getElement('control').children.item(0).style.borderColor = 'rgba(0,0,0,0)';
 			canvas.colorParent.style.backgroundColor = 'rgba(255,255,255,.5)';
+			canvas.draw();
 		}
 	};
 	canvas.stopDrawing = function(){
@@ -55,6 +56,7 @@ $(document).ready(function(){
 			getElement('control').children.item(0).style.borderColor = 'rgba(0,0,0,0.4)';
 			document.querySelector('button.change_color_wrapper').disabled = true;
 			canvas.colorParent.style.backgroundColor = 'rgba(0,0,0,.2)';
+			canvas.draw();
 		}
 	};
 	canvas.changeColor = function(source){
@@ -74,7 +76,6 @@ $(document).ready(function(){
 	}
 	canvas.colorParent = getElement('palette').children.item(0);
 	canvas.color = {value:canvas.colorParent.children.item(0).innerText};
-	canvas.stopDrawing();
 	canvas.prevClient = {
 		x:0,
 		y:0
@@ -159,6 +160,9 @@ $(document).ready(function(){
 		if(canvas.drawGrid){
 			canvas.drawGridLines();
 		}
+		if(canvas.selected.selected && !canvas.drawing){
+			canvas.drawSelected();
+		}
 	}
 	canvas.drawGridLines = function(){
 		canvas.ctx.strokeStyle = "#ffffff";
@@ -179,6 +183,36 @@ $(document).ready(function(){
 				canvas.ctx.lineTo(placeWidth,j*(10**i));
 			}
 			canvas.ctx.stroke();
+		}
+	}
+	canvas.drawSelected = function(){
+		canvas.ctx.strokeStyle = "#ff0000";
+		canvas.ctx.lineWidth = 3*canvas.gridLineWidthCoeff/canvas.scale;
+		let l = Math.max(0,-canvas.origin.x/canvas.scale);
+		let u = Math.max(0,-canvas.origin.y/canvas.scale);
+		let p = clientToCtx(canvas.left+canvas.width,canvas.top+canvas.width);
+		let r = Math.min(placeWidth,p.x);
+		let d = Math.min(placeWidth,p.y);
+		canvas.ctx.beginPath();
+		for(let i=0;i<2;i++){
+			canvas.ctx.moveTo(l,canvas.selected.y+i);
+			canvas.ctx.lineTo(r,canvas.selected.y+i);
+		}
+		for(let i=0;i<2;i++){
+			canvas.ctx.moveTo(canvas.selected.x+i,u);
+			canvas.ctx.lineTo(canvas.selected.x+i,d);
+		}
+		canvas.ctx.stroke();
+	}
+	canvas.updateSelected = function(x,y){
+		if(0<x && x<placeWidth && 0<y && y<placeWidth){
+			canvas.selected.selected = true;
+			canvas.selected.x = Math.floor(x);
+			canvas.selected.y = Math.floor(y);
+			canvas.draw();
+		}else{
+			canvas.selected.selected = false;
+			canvas.draw();
 		}
 	}
 	canvas.updatePlace = async function(){
@@ -290,5 +324,6 @@ $(document).ready(function(){
   		lastTouchEnd = now;
 	}, false);
 
+	canvas.stopDrawing();
 	connectFun(false);
 });
