@@ -371,3 +371,7 @@ div.connect button {
 	text-align: center;
 	margin: 20% 3%;
 }
+#commitParentContainer {
+	height: 200px;
+	overflow-y: scroll;
+}

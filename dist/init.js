@@ -272,6 +272,18 @@ $(document).ready(function(){
 		}
 		image.src = newCanvas.toDataURL();
 	}
+	canvas.updatePlaceHistory = async function(){
+		canvas.placeHistory = await KadenaPlace.placeHistory();
+		canvas.placeNow = Array(placeWidth**2).fill({"owner":"N/A","color":"N/A","time":"N/A","price":"0.01"});
+		for(let i=0;i<canvas.placeHistory.length;i++){
+			let buys = canvas.placeHistory[i].history.length;
+			let data = canvas.placeHistory[i].history[buys-1];
+			tempPriceStr = JSON.stringify(2**buys).padStart(3,'0');
+			data.price = tempPriceStr.substr(0,tempPriceStr.length-2)+'.'+tempPriceStr.substr(tempPriceStr.length-2,2);
+			canvas.placeNow[JSON.parse(canvas.placeHistory[i].id)] = data;
+		}
+	}
+	canvas.updatePlaceHistory();
 	canvas.makePlaceImg = async function(){
 		let newCanvas = document.createElement("canvas");
 		newCanvas.width = placeWidth;
@@ -306,6 +318,12 @@ $(document).ready(function(){
 	canvas.pixelsData = Array(placeWidth**2);
 	//canvas.getPixelsData();
 	canvas.makePlaceImg();
+	canvas.commitContainer = {
+		parent: document.getElementById('commitParentContainer'),
+		element: document.createElement('div')
+	};
+	console.log(canvas.commitContainer.parent);
+	canvas.commitContainer.parent.appendChild(canvas.commitContainer.element);
 
 	$(window).resize(function(){
 		resizeHandler();
