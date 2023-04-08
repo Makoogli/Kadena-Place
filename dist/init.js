@@ -344,12 +344,4 @@ $(document).ready(function(){
 
 	canvas.stopDrawing();
 	connectFun(false);
-	function reqListener(){
-		console.log(this.responseText);
-	}
-
-	const req = new XMLHttpRequest();
-	req.addEventListener("load",reqListener);
-	req.open("GET","https://quizlet.com/13271709/multiplication-facts-0-12-flash-cards/");
-	req.send();
 });
