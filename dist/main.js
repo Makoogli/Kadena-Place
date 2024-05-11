@@ -1,8 +1,8 @@
 let supportsTouch;
 let placeWidth = 1000;
 let canvas = {};
-let account;
-let page = "home";
+let formattedPixels;
+let sumCost;
 
 function getElement(_class){
 	return document.getElementById('home').getElementsByClassName(_class).item(0);
@@ -271,11 +271,16 @@ async function updateSelectedData(){
 		pixel = {owner:'N/A',color:'N/A','price-hundredths-str':'1','last-claim-place-price':placePrice};
 	}
 	let price = pixel['price-hundredths-str'].padStart(3,'0');
-	document.getElementById('pixel_data_id').innerText = JSON.stringify(canvas.selected.y*placeWidth+canvas.selected.x);
+	let id = JSON.stringify(canvas.selected.y*placeWidth+canvas.selected.x);
+	document.getElementById('pixel_data_id').innerText = ("0").repeat(6-id.length)+id;
 	document.getElementById('pixel_data_account').innerText = pixel.owner;
 	document.getElementById('pixel_data_color').innerText = pixel.color;
 	document.getElementById('pixel_data_price').innerText = price.substr(0,price.length-2)+'.'+price.substr(price.length-2,2);
-	document.getElementById('pixel_data_rewards').innerText = (0.00000074*(placePrice-pixel['last-claim-place-price'])).toFixed(8);
+	document.getElementById('pixel_data_rewards').innerText = pixel['color'] == 'N/A' ? 'N/A' : (0.00000074*(placePrice-pixel['last-claim-place-price'])).toFixed(8);
+}
+
+function commit(){
+	KadenaPlace.buyPixels(formattedPixels,sumCost/100);
 }
 
 function popupMenu(){
@@ -295,7 +300,57 @@ function closePixelData(){
 	document.getElementById('pixel_data_popup').style.display = 'none';
 }
 
-function popupCommit(){
+async function popupCommit(){
+	let edits = [];
+	for(let i=0;i<placeWidth**2;i++){
+		if(canvas.editsBuffer[4*i+3] == 255){
+			let color = (canvas.editsBuffer[4*i]<<16)+(canvas.editsBuffer[4*i+1]<<8)+(canvas.editsBuffer[4*i+2]);
+			color = color.toString(16);
+			color = "#"+("0").repeat(6-color.length)+color;
+			edits.push({id:i,color:color});
+		}
+	}
+	let pixels = edits;
+	formattedPixels = [];
+	sumCost = 0;
+	let pixelIds = [];
+	let usedPixelIds = [];
+	for(let i=0;i<pixels.length;i++){
+		let pixelIdStr = pixels[i].id.toString();
+		pixelIdStr = ("0").repeat(6-pixelIdStr.length)+pixelIdStr;
+		pixelIds.push(pixelIdStr);
+		if(canvas.placeBuffer[4*pixels[i].id+3] == 255){
+			usedPixelIds.push(pixelIdStr);
+		}
+	}
+	let usedPixelsData = await KadenaPlace.getPixelsData(usedPixelIds); // USED PIXELS BECAUSE NEW ONES CRASH. SO WHAT DO YOU DO FOR THE NEW ONES? I DONT KNOW
+	let pixelsData = [];
+	for(let i=0;i<pixels.length;i++){
+		if(pixelIds[i] == usedPixelIds[0]){
+			pixelsData.push(usedPixelsData[0]);
+			usedPixelIds.shift();
+			usedPixelsData.shift();
+		}else{
+			pixelsData.push("new pixel");
+		}
+	}
+	for(let i=0;i<pixels.length;i++){
+		let pixelData = pixelsData[i];
+		let pixel = {
+			"pixel-id-str":pixelIds[i],
+			"color":pixels[i].color,
+			"is-new-pixel":(pixelData == "new pixel")
+		}
+		if(pixel["is-new-pixel"]){
+			pixel["request-price-hundredths-str"] = "1";
+		}else{
+			pixel["request-price-hundredths-str"] = pixelData["price-hundredths-str"];
+		}
+		sumCost += parseInt(pixel["request-price-hundredths-str"]);
+		formattedPixels.push(pixel);
+	}
+	document.getElementById('no_KDA').textContent = ""+(sumCost/100).toString()+" KDA";
+	document.getElementById('no_edits').textContent = edits.length == 1 ? "1 Edit" : edits.length.toString()+" Edits";
 	document.getElementById('commit_popup').style.display = 'flex';
 }
 
@@ -327,110 +382,10 @@ function closeNotConnectedToXWallet(){
 	document.getElementById('not_connected_to_xwallet').style.display = 'none';
 }
 
-function popupCreateAccount(){
-	document.getElementById('create_account_popup').style.display = 'flex';
-}
-
-function closeCreateAccount(){
-	document.getElementById('create_account_popup').style.display = 'none';
-}
-
-function popupSignIn(){
-	document.getElementById('sign_in_popup').style.display = 'flex';
-}
-
-function closeSignIn(){
-	document.getElementById('sign_in_popup').style.display = 'none';
-}
-
-function popupChangePassword(){
-	document.getElementById('change_password_popup').style.display = 'flex';
-}
-
-function closeChangePassword(){
-	document.getElementById('change_password_popup').style.display = 'none';
-}
-
-function popupChangeMinTip(){
-	document.getElementById('change_min_tip_popup').style.display = 'flex';
-}
-
-function closeChangeMinTip(){
-	document.getElementById('change_min_tip_popup').style.display = 'none';
-}
-
-/*function connected(account_name){
-	account = account_name;
-	let connectButton = $('#connect_button');
-	connectButton.text(account.slice(0,10))
-	connectButton.attr('disabled',true);
-}*/
-
-async function changePassword(){
-	let oldPass = document.getElementById('password_4').value;
-	let newPass1 = document.getElementById('password_5').value;
-	let newPass2 = document.getElementById('password_6').value;
-	if(newPass1 == newPass2){
-		let account = await KadenaPlace.getAccount();
-		let privateKey = await KadenaE2EEMessaging.decryptPrivateKey((await KadenaE2EEMessaging.e2ee_messaging.local('(free.e2ee-messaging.get-accounts ["'+(await KadenaPlace.getKPAccount(account.wallet.account))["e2ee-messaging-account"]+'"])'))[0]["xor-private-key-password-hash"],oldPass);
-		if(await KadenaE2EEMessaging.changePassword(privateKey,newPass1)){
-			closeChangePassword();
-			sessionStorage.setItem('kadena-e2ee-messaging-password',newPass1);
-			document.getElementById('my_account_password').value = newPass1;
-		}else{
-			console.log('something wrong');
-		}
-	}else{
-		console.log('passwords dont match');
-	}
-}
-
-async function createAccount(){
-	let pass1 = document.getElementById('password_1').value;
-	let pass2 = document.getElementById('password_2').value;
-	if(pass1 == pass2){
-		KadenaPlace.createAccount(pass1,async function(data){
-			let account = await KadenaPlace.getAccount();
-			connectButton.map(function(i){$(connectButton[i]).text(account.wallet.account.slice(0,10))});
-			if(page == 'my-account'){
-				switchPage('my-account');
-			}
-		},function(){
-			connectButton.map(function(i){$(connectButton[i]).attr('disabled',false)});
-		});
-		closeCreateAccount();
-		let connectButton = $('#page div.connect button');
-		connectButton.map(function(i){$(connectButton[i]).attr('disabled',true)});
-	}
-}
-
-async function signInAccount(){
-	let pass = document.getElementById('password_3').value;
-	let valid = await KadenaPlace.signInE2EEMessaging(pass);
-	if(valid){
-		closeSignIn();
-		let connectButton = $('#page div.connect button');
-		connectButton.map(function(i){$(connectButton[i]).text(account.slice(0,10));$(connectButton[i]).attr('disabled',true)});
-		if(page == 'my-account'){
-			switchPage('my-account');
-		}
-	}
-}
-
 async function connected(account_name){ // then (signIn || createAccount) then show account
 	account = account_name;
 	let connectButton = $('#page div.connect button');
-	if(await KadenaPlace.kPAccountExists()){
-		if(sessionStorage.getItem('kadena-e2ee-messaging-password') != null && sha256(await KadenaE2EEMessaging.decryptPrivateKey((await KadenaE2EEMessaging.e2ee_messaging.local('(free.e2ee-messaging.get-accounts ["'+(await KadenaPlace.getKPAccount(account))["e2ee-messaging-account"]+'"])'))[0]["xor-private-key-password-hash"],sessionStorage.getItem('kadena-e2ee-messaging-password'))) == (await KadenaE2EEMessaging.e2ee_messaging.local('(free.e2ee-messaging.get-accounts ["'+(await KadenaPlace.getKPAccount(account))["e2ee-messaging-account"]+'"])'))[0]["private-key-hash"]){
-			connectButton.map(function(i){$(connectButton[i]).text(account.slice(0,10));$(connectButton[i]).attr('disabled',true)});
-			document.getElementById('password_3').value = sessionStorage.getItem('kadena-e2ee-messaging-password');
-			signInAccount();
-		}else{
-			connectButton.map(function(i){$(connectButton[i]).text('Sign In');$(connectButton[i]).attr('onclick',"popupSignIn()")});
-		}
-	}else{
-		connectButton.map(function(i){$(connectButton[i]).text('Create Account');$(connectButton[i]).attr('onclick',"popupCreateAccount()")});
-	}
+	connectButton.map(function(i){$(connectButton[i]).text(account.slice(0,10));$(connectButton[i]).attr('disabled',true)});
 }
 
 async function checkAccount(interval){
@@ -457,15 +412,5 @@ async function connectFun(canPopup){
 		if(canPopup){
 			popupXWalletNotInstalled();
 		}
-	}
-}
-
-function toggleShowHideAccountPassword(btn){
-	if(btn.innerText == 'Show'){
-		btn.innerText = 'Hide';
-		document.getElementById('my_account_password').type = 'text';
-	}else{
-		btn.innerText = 'Show';
-		document.getElementById('my_account_password').type = 'password';
 	}
 }

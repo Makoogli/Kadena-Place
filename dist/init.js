@@ -114,8 +114,6 @@ $(document).ready(function(){
 	canvas.history = [];
 	canvas.historyIndex = 0;
 	canvas.currentEdit = [];
-	canvas.currentFinalEdit = [];
-	canvas.currentEditDBuffer = Array(4*placeWidth**2).fill(0);
 	canvas.redo = function(){
 		if(canvas.historyIndex<canvas.history.length){
 			canvas.historyIndex++;
@@ -277,9 +275,9 @@ $(document).ready(function(){
 		newCanvas.width = placeWidth;
 		newCanvas.height = placeWidth;
 		let newCtx = newCanvas.getContext("2d");
-		let buffer = await KadenaPlace.getPlace();
+		canvas.placeBuffer = await KadenaPlace.getPlace();
 		let idata = newCtx.createImageData(placeWidth,placeWidth);
-		idata.data.set(buffer);
+		idata.data.set(canvas.placeBuffer);
 		newCtx.putImageData(idata, 0, 0);
 		let image = new Image();
 		image.onload = function(){

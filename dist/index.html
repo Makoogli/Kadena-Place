@@ -4,10 +4,7 @@
 		<meta name='viewport' content='user-scalable=no'>
 		<script type="text/javascript" type="" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pact-lang-api@4.1.2/pact-lang-api-global.min.js"></script>
-		<script type="text/javascript" src="./hybrid-crypto.min.js"></script>
-		<script type="text/javascript" src="./sha256.min.js"></script>
 		<script type="text/javascript" src="./simple-XWallet.js"></script>
-		<script type="text/javascript" src="./kadena-e2ee-messaging.js"></script>
 		<script type="text/javascript" src="./kadena-place.js"></script>
 		<script type="text/javascript" src="./main.js"></script>
 		<script type="text/javascript" src="./init.js"></script>
@@ -116,23 +113,23 @@
 					<table>
 						<tr>
 							<th>Pixel ID</th>
-							<td id='pixel_data_id'></td> <!--LINK-->
+							<td id='pixel_data_id'>000000</td> <!--LINK-->
 						</tr>
 						<tr>
 							<th>Artist</th>
-							<td id='pixel_data_account'>savasd</td> <!--LINK-->
+							<td id='pixel_data_account'>N/A</td> <!--LINK-->
 						</tr>
 						<tr>
 							<th>Color</th>
-							<td id='pixel_data_color'>asdvasvddf</td>
+							<td id='pixel_data_color'>N/A</td>
 						</tr>
 						<tr>
 							<th>Price</th>
-							<td id='pixel_data_price'>asdva</td>
+							<td id='pixel_data_price'>0.01</td>
 						</tr>
 						<tr>
 							<th>Rewards Available</th>
-							<td id='pixel_data_rewards'>asdv</td>
+							<td id='pixel_data_rewards'>N/A</td>
 						</tr>
 					</table>
 				</div>
@@ -144,19 +141,10 @@
 				<button class='close' type='button' onclick='closeCommit()'>Close</button>
 				<div class='body'>
 					<div class='upper_body'>
-						<table>
-							<tr>
-								<th># of Pixels</th>
-								<td></td>
-							</tr>
-							<tr>
-								<th>Price</th>
-								<td></td>
-							</tr>
-						</table>
-						<div class='edits'></div>
+						<div id='no_edits'></div>
+						<div id='no_KDA'></div>
 					</div>
-					<button class='commit'>Commit</button>
+					<button class='commit' onclick='commit()'>Commit</button>
 				</div>
 			</div>
 		</div>
@@ -209,46 +197,12 @@
 				</div>
 			</div>
 		</div>
-		<div id='create_account_popup' class='popup'>
+		<div id='xwallet_not_installed_popup' class='popup'>
 			<div class='window'>
-				<div class='header'>Create Password</div>
-				<button class='close' type='button' onclick='closeCreateAccount()'>Close</button>
+				<div class='header'>Install Ecko Wallet</div>
+				<button class='close' type='button' onclick='closeXWalletNotInstalled()'>Close</button>
 				<div class='body'>
-					Password: <input id='password_1' type='password'>
-					Retype Password:<input id='password_2' type='password'>
-					<button type='button' onclick='createAccount()'>Create</button>
-				</div>
-			</div>
-		</div>
-		<div id='sign_in_popup' class='popup'>
-			<div class='window'>
-				<div class='header'>Account Password</div>
-				<button class='close' type='button' onclick='closeSignIn()'>Close</button>
-				<div class='body'>
-					Password: <input id='password_3' type='password'>
-					<button type='button' onclick='signInAccount()'>Sign In</button>
-				</div>
-			</div>
-		</div>
-		<div id='change_password_popup' class='popup'>
-			<div class='window'>
-				<div class='header'>Change Password</div>
-				<button class='close' type='button' onclick='closeChangePassword()'>Close</button>
-				<div class='body'>
-					Old Password: <input id='password_4' type='password'>
-					New Password: <input id='password_5' type='password'>
-					New Password: <input id='password_6' type='password'>
-					<button type='button' onclick='changePassword()'>Confirm</button>
-				</div>
-			</div>
-		</div>
-		<div id='change_min_tip_popup' class='popup'>
-			<div class='window'>
-				<div class='header'>Change Minimum Tip</div>
-				<button class='close' type='button' onclick='closeChangeMinTip()'>Close</button>
-				<div class='body'>
-					Minimum Tip: <input id='min_tip'>
-					<button type='button' onclick='changeMinTip()'>Confirm</button>
+					Ecko Wallet Not Installed
 				</div>
 			</div>
 		</div>
