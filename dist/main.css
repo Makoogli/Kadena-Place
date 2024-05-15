@@ -374,3 +374,9 @@ div.connect button {
 #claim_rewards {
 	display: none;
 }
+.bottom-button {
+	border: solid rgba(0,0,0,1) 0.15vh;
+}
+.bottom-button:hover {
+	background-color: rgba(230,230,230,1);
+}
