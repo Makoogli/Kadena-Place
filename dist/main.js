@@ -285,6 +285,11 @@ function commit(){
 	closeCommit();
 }
 
+function claimRewards(){
+	KadenaPlace.claimRewards();
+	closeMyAccount();
+}
+
 function popupMenu(){
 	document.getElementById('links_popup').style.display = 'flex';
 }
@@ -394,7 +399,13 @@ async function popupMyAccount(){
 	console.log(data);
 	document.getElementById('account_creation').textContent = data['account-created']['timep'];
 	document.getElementById('account_lifetime_pixels_bought').textContent = data['lifetime-pixels-bought']['int'].toString();
-	document.getElementById('account_claimable_rewards').textContent = (await KadenaPlace.accountAvailableRewards(account)).toFixed(10);
+	let rewards = await KadenaPlace.accountAvailableRewards(account);
+	document.getElementById('account_claimable_rewards').textContent = rewards.toFixed(10);
+	if(rewards>0){
+		document.getElementById('claim_rewards').style.display = 'flex';
+	}else{
+		document.getElementById('claim_rewards').style.display = 'none';
+	}
 }
 
 function closeMyAccount(){

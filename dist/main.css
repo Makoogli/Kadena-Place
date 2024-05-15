@@ -371,6 +371,6 @@ div.connect button {
 	text-align: center;
 	margin: 20% 3%;
 }
-.claim_rewards {
+#claim_rewards {
 	display: none;
 }
