@@ -70,7 +70,6 @@ function intToHexColor(intArr){
 	return '#'+intArr[0].toString(16).padStart(2,'0')+intArr[1].toString(16).padStart(2,'0')+intArr[2].toString(16).padStart(2,'0');
 }
 
-
 function canvasViewingMouseDownHandler(event){
 	if(event.targetTouches == undefined){
 		canvas.jCanvas.off('mousedown',canvasViewingMouseDownHandler);
@@ -285,6 +284,39 @@ function commit(){
 	closeCommit();
 }
 
+async function updateCommitData(){
+	let pixels = {};
+	let cnt = 0;
+	for(let i=0;i<placeWidth*placeWidth;i++){
+		if(canvas.editsBuffer[4*i+3] == 255){
+			pixels[i] = canvas.editsBuffer.slice(4*i,4*i+3);
+			cnt += 1;
+		}
+	}
+	document.getElementById('commitNumOfPixels').innerText = cnt.toString();
+	let pixelsData = await KadenaPlace.getPixelsData(Object.keys(pixels));
+	let sumPrice = 0;
+	for(let i=0;i<pixelsData.length;i++){
+
+	}
+	let container = document.createElement('table');
+	let ids = Object.keys(pixels);
+	for(let i=0;i<ids.length;i++){
+		let item = document.createElement('tr');
+		let id = document.createElement('th');
+		let color = '#'+pixels[ids[i]][0].toString(16).padStart(2,'0')+pixels[ids[i]][1].toString(16).padStart(2,'0')+pixels[ids[i]][2].toString(16).padStart(2,'0');
+		let relLum = (0.299*pixels[ids[i]][0]+0.587*pixels[ids[i]][1]+0.114*pixels[ids[i]][2])/255;
+		item.style.backgroundColor = color;
+		item.style.color = relLum<0.5?'#ffffff':'#000000';
+		id.innerText = ids[i];
+		item.appendChild(id);
+		container.appendChild(item);
+	}
+	canvas.commitContainer.parent.removeChild(canvas.commitContainer.element);
+	canvas.commitContainer.element = container;
+	canvas.commitContainer.parent.appendChild(canvas.commitContainer.element);
+}
+
 function popupMenu(){
 	document.getElementById('links_popup').style.display = 'flex';
 }
@@ -354,6 +386,7 @@ async function popupCommit(){
 	document.getElementById('no_KDA').textContent = ""+(sumCost/100).toString()+" KDA";
 	document.getElementById('no_edits').textContent = edits.length == 1 ? "1 Edit" : edits.length.toString()+" Edits";
 	document.getElementById('commit_popup').style.display = 'flex';
+	updateCommitData();
 }
 
 function closeCommit(){
