@@ -273,14 +273,16 @@ async function updateSelectedData(){
 	let price = pixel['price-hundredths-str'].padStart(3,'0');
 	let id = JSON.stringify(canvas.selected.y*placeWidth+canvas.selected.x);
 	document.getElementById('pixel_data_id').innerText = ("0").repeat(6-id.length)+id;
-	document.getElementById('pixel_data_account').innerText = pixel.owner;
+	document.getElementById('pixel_data_account').innerText = pixel.owner.length < 11 ? pixel.owner : pixel.owner.substr(0,10)+"...";
 	document.getElementById('pixel_data_color').innerText = pixel.color;
 	document.getElementById('pixel_data_price').innerText = price.substr(0,price.length-2)+'.'+price.substr(price.length-2,2);
-	document.getElementById('pixel_data_rewards').innerText = pixel['color'] == 'N/A' ? 'N/A' : (0.00000074*(placePrice-pixel['last-claim-place-price'])).toFixed(8);
+	
+	document.getElementById('pixel_data_rewards').innerText = pixel.color == 'N/A' ? 'N/A' : (0.00000074*(placePrice-pixel['last-claim-place-price'])).toFixed(10);
 }
 
 function commit(){
 	KadenaPlace.buyPixels(formattedPixels,sumCost/100);
+	closeCommit();
 }
 
 function popupMenu(){
@@ -382,10 +384,35 @@ function closeNotConnectedToXWallet(){
 	document.getElementById('not_connected_to_xwallet').style.display = 'none';
 }
 
+async function popupMyAccount(){
+	document.getElementById('my_account_popup').style.display = 'flex';
+	if(!(await KadenaPlace.accountExists)){
+		popupNoAccount();
+		closeMyAccount();
+	}
+	let data = await KadenaPlace.accountData(account);
+	console.log(data);
+	document.getElementById('account_creation').textContent = data['account-created']['timep'];
+	document.getElementById('account_lifetime_pixels_bought').textContent = data['lifetime-pixels-bought']['int'].toString();
+	document.getElementById('account_claimable_rewards').textContent = (await KadenaPlace.accountAvailableRewards(account)).toFixed(10);
+}
+
+function closeMyAccount(){
+	document.getElementById('my_account_popup').style.display = 'none';
+}
+
+function popupNoAccount(){
+	document.getElementById('no_account_popup').style.display = 'flex';
+}
+
+function closeNoAccount(){
+	document.getElementById('no_account_popup').style.display = 'none';
+}
+
 async function connected(account_name){ // then (signIn || createAccount) then show account
 	account = account_name;
-	let connectButton = $('#page div.connect button');
-	connectButton.map(function(i){$(connectButton[i]).text(account.slice(0,10));$(connectButton[i]).attr('disabled',true)});
+	document.getElementById('connect_button').textContent = account.slice(0,10);
+	document.getElementById('connect_button').onclick = popupMyAccount;
 }
 
 async function checkAccount(interval){
@@ -413,4 +440,8 @@ async function connectFun(canPopup){
 			popupXWalletNotInstalled();
 		}
 	}
+}
+
+async function localExec(code){
+	console.log(await Pact.fetch.local({meta:Pact.lang.mkMeta("", "5", 1e-7, 150000, 0, 600),pactCode:code},"https://api.chainweb.com/chainweb/0.0/mainnet01/chain/5/pact"));
 }

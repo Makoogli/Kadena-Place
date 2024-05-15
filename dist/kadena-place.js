@@ -1,15 +1,14 @@
 let KadenaPlace = {
 	getPlace: async function(){
 		let data = await Pact.fetch.local({meta:Pact.lang.mkMeta("", "5", 1e-7, 150000, 0, 600),pactCode:"(free.kadena-place-paint.get-place)"},"https://api.chainweb.com/chainweb/0.0/mainnet01/chain/5/pact");
-		console.log(data);
 		let pixels = data.result.data;
 		let pixelArray = Array(4000000);
 		for(let i=0;i<pixels.length;i++){
-			let hexColor = pixels[i].color;
+			let hexColor = pixels[i][1];
 			let r = parseInt(hexColor.substring(1,3),16);
 			let g = parseInt(hexColor.substring(3,5),16);
 			let b = parseInt(hexColor.substring(5,7),16);
-			let redPos = 4*pixels[i].id;
+			let redPos = 4*parseInt(pixels[i][0]);
 			pixelArray[redPos+0] = r;
 			pixelArray[redPos+1] = g;
 			pixelArray[redPos+2] = b;
@@ -42,6 +41,14 @@ let KadenaPlace = {
 							cap:{
 								name:"coin.TRANSFER",
 								args:[account.wallet.account,"kadena-place paint pool",cost]
+							}
+						},
+						{
+							role:"Account cap",
+							description:"confirm owner",
+							cap:{
+								name:"free.kadena-place-paint.ACCOUNT-GUARD",
+								args:[account.wallet.account]
 							}
 						}
 					],
@@ -143,7 +150,7 @@ let KadenaPlace = {
 		return data.result.data;
 	},
 	accountAvailableRewards: async function(account){
-		let pixels_data = await KadenaE2EEMessaging.e2ee_messaging.local('(free.kadena-place-paint.get-pixels-data '+JSON.stringify(await KadenaPlace.accountPixelIds(account))+')');
+		let pixels_data = (await Pact.fetch.local({meta:Pact.lang.mkMeta("", "5", 1e-7, 150000, 0, 600),pactCode:'(free.kadena-place-paint.get-pixels-data '+JSON.stringify(await KadenaPlace.accountPixelIds(account))+')'},"https://api.chainweb.com/chainweb/0.0/mainnet01/chain/5/pact")).result.data;
 		let rewards = pixels_data.length*(await KadenaPlace.placePrice());
 		for(let i=0;i<pixels_data.length;i++){
 			rewards -= pixels_data[i]["last-claim-place-price"];
@@ -152,6 +159,10 @@ let KadenaPlace = {
 	},
 	placePrice: async function(){
 		let data = await Pact.fetch.local({meta:Pact.lang.mkMeta("", "5", 1e-7, 150000, 0, 600),pactCode:"(free.kadena-place-paint.get-place-price)"},"https://api.chainweb.com/chainweb/0.0/mainnet01/chain/5/pact");
-		return data;
+		return data.result.data;
+	},
+	accountData: async function(account){
+		let data = await Pact.fetch.local({meta:Pact.lang.mkMeta("", "5", 1e-7, 150000, 0, 600),pactCode:'(free.kadena-place-paint.get-account "'+account+'")'},"https://api.chainweb.com/chainweb/0.0/mainnet01/chain/5/pact");
+		return data.result.data;
 	}
 }

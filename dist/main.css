@@ -290,7 +290,7 @@ body.nontouch #home div.palette button:hover {
 	padding: 0.44vh;
 	transition: margin 0.2s, width 0.2s, height 0.2s;
 }
-body.nontouch #home button.eraser_wrapper:hover, body.nontouch #home button.change_color_wrapper:hover:enabled {
+body.nontouch #home button.eraser_wrapper:hover, body.nontouch #home button.change_color_wrapper:hover {
 	margin: 0px 1.78vh;
 	width: 5.95vh;
 	height: 5.95vh;
@@ -370,4 +370,7 @@ div.connect button {
 #my-account input {
 	text-align: center;
 	margin: 20% 3%;
+}
+.claim_rewards {
+	display: none;
 }

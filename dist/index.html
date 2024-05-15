@@ -78,9 +78,9 @@
 								</button>
 							</div>
 						</div>
-						<button class='change_color_wrapper' type='button' onclick='let hidden_color = document.getElementById("hidden_color");hidden_color.value = canvas.color.value;hidden_color.click();' disabled>
+						<button class='change_color_wrapper' type='button'>
 							<div class='change_color'>
-								<div class='rainbow'></div>
+								<div class='rainbow' onclick='console.log("clicked");let hidden_color = document.getElementById("hidden_color");hidden_color.value = canvas.color.value;hidden_color.click();'></div>
 							</div>
 							<input id='hidden_color' type='color' oninput='thinChangeColor(this)' value='#ff0000'>
 						</button>
@@ -96,12 +96,8 @@
 		<div id='links_popup' class='popup' onclick='closeMenu()'>
 			<div class='window'>
 				<a id='link_home' href='https://www.kadena-place.com/'>Home</a>
-				<a id='link_my-account' href='https://www.kadena-place.com/my-account'>My Account</a>
-				<a id='link_stats' href='https://www.kadena-place.com/stats'>Stats</a>
-				<a id='link_pixels' href='https://www.kadena-place.com/pixels'>Pixels Explorer</a>
-				<a id='link_accounts' href='https://www.kadena-place.com/accounts'>Accounts Explorer</a>
-				<a id='link_timeline' href='https://www.kadena-place.com/timeline'>Timeline Explorer</a>
-				<a id='link_xwallet' href='https://xwallet.kaddex.com/#download'>XWallet</a>
+				<a id='link_my-account' href='https://paint.kadena-place.com/my-account'>My Account</a>
+				<a id='link_xwallet' href='https://wallet.ecko.finance/#download'>Ecko Wallet</a>
 				<a id='link_kadena' href='https://kadena.io/'>Kadena</a>
 			</div>
 		</div>
@@ -194,6 +190,38 @@
 							</th>
 						</tr>
 					</table>
+				</div>
+			</div>
+		</div>
+		<div id='my_account_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>My Account</div>
+				<button class='close' type='button' onclick='closeMyAccount()'>Close</button>
+				<div class='body'>
+					<table>
+						<tr>
+							<th>Account Created</th>
+							<td id='account_creation'>N/A</td> <!--LINK-->
+						</tr>
+						<tr>
+							<th>Pixels Bought</th>
+							<td id='account_lifetime_pixels_bought'>N/A</td> <!--LINK-->
+						</tr>
+						<tr>
+							<th>Rewards Available</th>
+							<td id='account_claimable_rewards'>N/A</td>
+						</tr>
+					</table>
+					<button class='claim_rewards' onclick='claimRewards()'>Claim Rewards</button>
+				</div>
+			</div>
+		</div>
+		<div id='no_account_popup' class='popup'>
+			<div class='window'>
+				<div class='header'>My Account</div>
+				<button class='close' type='button' onclick='closeNoAccount()'>Close</button>
+				<div class='body'>
+					Account does not exist yet!
 				</div>
 			</div>
 		</div>
