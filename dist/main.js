@@ -1,3 +1,4 @@
+let account;
 let supportsTouch;
 let placeWidth = 1000;
 let canvas = {};
@@ -281,8 +282,12 @@ async function updateSelectedData(){
 }
 
 function commit(){
-	KadenaPlace.buyPixels(formattedPixels,sumCost/100);
-	closeCommit();
+	if(account == undefined){
+		connectFun(true);
+	}else{
+		KadenaPlace.buyPixels(formattedPixels,sumCost/100);
+		closeCommit();
+	}
 }
 
 function claimRewards(){
@@ -379,14 +384,6 @@ function popupXWalletNotInstalled(){
 
 function closeXWalletNotInstalled(){
 	document.getElementById('xwallet_not_installed_popup').style.display = 'none';
-}
-
-function popupNotConnectedToXWallet(){
-	document.getElementById('not_connected_to_xwallet').style.display = 'flex';
-}
-
-function closeNotConnectedToXWallet(){
-	document.getElementById('not_connected_to_xwallet').style.display = 'none';
 }
 
 async function popupMyAccount(){
